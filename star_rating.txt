@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+
+    <script src="jquery.js"></script>
+</head>
+<body>
+    
+    <div class="star-rating">
+        <span id="s1" class="star">&#9733;</span>
+        <span id="s2" class="star">&#9733;</span>
+        <span id="s3" class="star">&#9733;</span>
+        <span id="s4" class="star">&#9733;</span>
+        <span id="s5" class="star">&#9733;</span>
+	<span id="rating-value">0</span>
+    </div>
+   
+    
+    <script>
+        $(document).ready(function() {
+           $("#s1").click(function(){
+
+            $(".star").css('color','black');
+            $("#s1").css('color','yellow');
+            $("#rating-value").text(1);
+
+           });
+           $("#s2").click(function(){
+
+            $(".star").css('color','black');
+            $("#s1,#s2").css('color','yellow');
+            $("#rating-value").text(2);
+
+            });
+
+            $("#s3").click(function(){
+
+            $(".star").css('color','black');
+            $("#s1,#s2,#s3").css('color','yellow');
+            $("#rating-value").text(3);
+
+            });
+            $("#s4").click(function(){
+
+            $(".star").css('color','black');
+            $("#s1,#s2,#s3,#s4").css('color','yellow');
+            $("#rating-value").text(4);
+
+            });
+
+            $("#s5").click(function(){
+
+            $(".star").css('color','black');
+            $("#s1,#s2,#s3,#s4,#s5").css('color','yellow');
+            $("#rating-value").text(5);
+
+            });
+
+
+
+
+        });
+    </script>
+</body>
+</html>

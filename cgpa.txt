@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA Calculator</title>
+    <script src="angular.js"></script>
+</head>
+<body ng-app="n1">
+    <div ng-controller="c1">
+        <h1>CGPA Calculator</h1>
+        Semester 1 GPA:
+        <input type="number" ng-model="gpa1" min="0" max="10"><br>
+    
+        Semester 2 GPA:
+        <input type="number" ng-model="gpa2" min="0" max="10"><br>
+    
+        Semester 3 GPA:
+        <input type="number" ng-model="gpa3" min="0" max="10"><br>
+    
+        Semester 4 GPA:
+        <input type="number" ng-model="gpa4" min="0" max="10"><br>
+    
+        Semester 5 GPA:
+        <input type="number" ng-model="gpa5" min="0" max="10"><br>
+    
+        Semester 6 GPA:
+        <input type="number" ng-model="gpa6" min="0" max="10"><br>
+    
+        Semester 7 GPA:
+        <input type="number" ng-model="gpa7" min="0" max="10"><br>
+    
+        Semester 8 GPA:
+        <input type="number" ng-model="gpa8" min="0" max="10"><br>
+    
+        <button ng-click="calculateCGPA()">Calculate CGPA</button>
+    
+        <div ng-if="output !== null">
+            Your CGPA is: {{ output | number:2 }}
+        </div>
+    
+    </div>
+    <script>
+        var app = angular.module('n1', []);
+
+        app.controller('c1', function($scope) {
+            $scope.gpa1 = null;
+            $scope.gpa2 = null;
+            $scope.gpa3 = null;
+            $scope.gpa4 = null;
+            $scope.gpa5 = null;
+            $scope.gpa6 = null;
+            $scope.gpa7 = null;
+            $scope.gpa8 = null;
+            $scope.cgpa = null;
+
+            $scope.calculateCGPA = function() {
+                var total = 0;
+                var count = 0;
+
+                var gpas = [$scope.gpa1, $scope.gpa2, $scope.gpa3, $scope.gpa4, 
+                            $scope.gpa5, $scope.gpa6, $scope.gpa7, $scope.gpa8];
+
+                for (var i = 0; i < gpas.length; i++) {
+                    if (gpas[i] !== null && gpas[i] !== undefined && gpas[i] !== "") {
+                        total = total + parseFloat(gpas[i]);
+                        count++;
+                    }
+                }
+
+                if (count > 0) {
+                    $scope.output = total / count;
+                } else {
+                    $scope.output = null;
+                    alert("Please enter at least one GPA!");
+                }
+            };
+        });
+    </script>
+
+</body>
+</html>

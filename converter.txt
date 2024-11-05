@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <h1 class="h1">Converter</h1>
+    <title>Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="angular.js"></script>
+    <script>
+        var myapp = angular.module("n1", []);
+
+        myapp.controller("c1", function($scope) {
+            $scope.tempConvert = function() {
+                var src = $scope.source;
+                var dst = $scope.destination;
+                var input = parseFloat($scope.input);
+
+                if (src === "c1" && dst === "f2") {
+                    $scope.output = "Celsius to Fahrenheit is " + ((input * 9) / 5 + 32);
+                } else if (src === "f1" && dst === "c2") {
+                    $scope.output = "Fahrenheit to Celsius is " + ((input - 32) * 5 / 9);
+                } else if (src === dst) {
+                    $scope.output = "Both fields must not be the same.";
+                } else {
+                    $scope.output = "Invalid conversion.";
+                }
+            };
+        });
+
+        myapp.controller("c2", function($scope) {
+            $scope.currencyConvert = function() {
+                var src = $scope.source;
+                var dst = $scope.destination;
+                var input = parseFloat($scope.input);
+
+                if (src === "r1" && dst === "d2") {
+                    $scope.output = "Converted amount is " + (input * 0.012);
+                } 
+                else if (src === "d1" && dst === "r2") {
+                    $scope.output = "Converted amount is " + (input * 82.0);
+                } else if (src === "r1" && dst === "e2") {
+                    $scope.output = "Converted amount is " + (input * 0.011);
+                } else if (src === "e1" && dst === "r2") {
+                    $scope.output = "Converted amount is " + (input * 91.0);
+                } else if (src === "d1" && dst === "e2") {
+                    $scope.output = "Converted amount is " + (input * 0.93);
+                } else if (src === "e1" && dst === "d2") {
+                    $scope.output = "Converted amount is " + (input * 1.08);
+                } else if (src === dst) {
+                    $scope.output = "Both fields must not be the same.";
+                } else {
+                    $scope.output = "Invalid conversion.";
+                }
+            };
+        });
+
+        myapp.controller("c3", function($scope) {
+            $scope.lengthConvert = function() {
+                var src = $scope.source;
+                var dst = $scope.destination;
+                var input = parseFloat($scope.input);
+
+                if (src === "m" && dst === "cm") {
+                    $scope.output = "Converted length is " + (input * 100);
+                } 
+                else if (src === "cm" && dst === "m") {
+                    $scope.output = "Converted length is " + (input / 100);
+                }
+                 else if (src === "m" && dst === "ft") {
+                    $scope.output = "Converted length is " + (input * 3.28084);
+                }
+                 else if (src === "ft" && dst === "m") {
+                    $scope.output = "Converted length is " + (input / 3.28084);
+                }
+                 else if (src === "m" && dst === "in") {
+                    $scope.output = "Converted length is " + (input * 39.3701);
+                }
+                 else if (src === "in" && dst === "m") {
+                    $scope.output = "Converted length is " + (input / 39.3701);
+                }
+                 else if (src === "ft" && dst === "cm") {
+                    $scope.output = "Converted length is " + (input * 30.48);
+                }
+                 else if (src === "cm" && dst === "ft") {
+                    $scope.output = "Converted length is " + (input / 30.48);
+                }
+                 else if (src === "ft" && dst === "in") {
+                    $scope.output = "Converted length is " + (input * 12);
+                }
+                 else if (src === "in" && dst === "ft") {
+                    $scope.output = "Converted length is " + (input / 12);
+                }
+                 else if (src === "in" && dst === "cm") {
+                    $scope.output = "Converted length is " + (input * 2.54);
+                }
+                 else if (src === "cm" && dst === "in") {
+                    $scope.output = "Converted length is " + (input / 2.54);
+                }
+                 else if (src === dst) {
+                    $scope.output = "Both fields must not be the same.";
+                }
+                 else {
+                    $scope.output = "Invalid conversion.";
+                }
+            };
+        });
+
+        myapp.controller("c4", function($scope) {
+            $scope.numberConvert = function() {
+                var src = $scope.source;
+                var dst = $scope.destination;
+                var input = $scope.input;
+
+                var number = parseInt(input, src);
+
+                if (isNaN(number)) {
+                    $scope.output = "Invalid number.";
+                } else {
+                    if (dst === "10") {
+                        $scope.output = "Converted number is " + number;
+                    } else if (dst === "2") {
+                        $scope.output = "Converted number is " + number.toString(2);
+                    } else if (dst === "8") {
+                        $scope.output = "Converted number is " + number.toString(8);
+                    } else if (dst === "16") {
+                        $scope.output = "Converted number is " + number.toString(16);
+                    } else {
+                        $scope.output = "Invalid conversion.";
+                    }
+                }
+            };
+        });
+    </script>
+</head>
+<body ng-app="n1">
+    <div class="card1">
+<div class="cont">
+    <div ng-controller="c2">
+        <h1>Currency Converter</h1>
+        <input type="text" ng-model="input" placeholder="Enter amount">
+
+        <select ng-model="source">
+            <option value="r1">Rupee</option>
+            <option value="d1">Dollar</option>
+            <option value="e1">Euro</option>
+        </select>
+
+        <select ng-model="destination">
+            <option value="r2">Rupee</option>
+            <option value="d2">Dollar</option>
+            <option value="e2">Euro</option>
+        </select>
+
+        <input type="button" value="Convert" ng-click="currencyConvert();">
+        <p>{{output}}</p>
+    </div>
+    </div>
+<br>
+    <div class="len">
+    <div ng-controller="c3">
+        <h1>Length Converter</h1>
+        <input type="text" ng-model="input" placeholder="Enter length">
+
+        <select ng-model="source">
+            <option value="m">Meter</option>
+            <option value="cm">Centimeter</option>
+            <option value="ft">Foot</option>
+            <option value="in">Inch</option>
+        </select>
+
+        <select ng-model="destination">
+            <option value="m">Meter</option>
+            <option value="cm">Centimeter</option>
+            <option value="ft">Foot</option>
+            <option value="in">Inch</option>
+        </select>
+
+        <input type="button" value="Convert" ng-click="lengthConvert();">
+        <p>{{output}}</p>
+    </div>
+    </div>
+</div>
+<br>
+<div class="card2">
+    <div class="num">
+    <div ng-controller="c4">
+        <h1>Number System Converter</h1>
+        <input type="text" ng-model="input" placeholder="Enter number">
+
+        <select ng-model="source">
+            <option value="10">Decimal</option>
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+
+        <select ng-model="destination">
+            <option value="10">Decimal</option>
+            <option value="2">Binary</option>
+            <option value="8">Octal</option>
+            <option value="16">Hexadecimal</option>
+        </select>
+
+        <input type="button" value="Convert" ng-click="numberConvert();">
+        <p>{{output}}</p>
+    </div>
+    </div>
+<br>
+<div>
+    <div ng-controller="c1">
+        <h1>Temperature Converter</h1>
+        <input type="text" ng-model="input" placeholder="Enter temperature">
+
+        <select ng-model="source">
+            <option value="c1">Celsius</option>
+            <option value="f1">Fahrenheit</option>
+        </select>
+
+        <select ng-model="destination">
+            <option value="c2">Celsius</option>
+            <option value="f2">Fahrenheit</option>
+        </select>
+
+        <input type="button" value="Convert" ng-click="tempConvert();">
+        <p>{{output}}</p>
+    </div>
+</div>
+</div>
+</body>
+</html>

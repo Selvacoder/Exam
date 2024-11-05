@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPA Calculator</title>
+    <script src="angular.js"></script>
+    <script>
+        var app = angular.module('n1', []);
+
+        app.controller('c1', function($scope) {
+
+            $scope.gradePoints = {
+                '10': 'O',
+                '9': 'A+',
+                '8': 'A',
+                '7': 'B+',
+                '6': 'B',
+                '5': 'C'
+            };
+
+            $scope.subject1 = { grade: '10', credit: 0 };
+            $scope.subject2 = { grade: '10', credit: 0 };
+
+
+            $scope.calculateGPA = function() {
+                var totalPoints = 0;
+                var totalCredits = 0;
+
+                var subjects = [$scope.subject1, $scope.subject2];
+                for (var i = 0; i < subjects.length; i++) {
+                    var gradePoint = parseFloat(subjects[i].grade);
+                    var credit = parseFloat(subjects[i].credit);
+
+                    if (gradePoint !== null && credit !== null && credit > 0) {
+                        totalPoints += gradePoint * credit;
+                        totalCredits += credit;
+                    }
+                }
+                
+                if(totalCredits > 0){
+                    $scope.output = totalPoints / totalCredits;
+                }
+                else{
+                    $scope.output = 'Invalid input';
+                }
+            };
+        });
+
+    </script>
+</head>
+<body ng-app="n1">
+
+    <div ng-controller="c1">
+        <h1>GPA Calculator</h1>
+
+        <form>
+            <div class="subject">
+                Subject 1 Grade:
+                <select id="grade1" ng-model="subject1.grade">
+                    <option value="10">O grade</option>
+                    <option value="9">A+</option>
+                    <option value="8">A</option>
+                    <option value="7">B+</option>
+                    <option value="6">B</option>
+                    <option value="5">C</option>
+                </select>
+                Credit Points:
+                <input type="number" id="credit1" ng-model="subject1.credit" min="0" placeholder="Enter credit" />
+            </div>
+
+            <div class="subject">
+                Subject 2 Grade:
+                <select id="grade2" ng-model="subject2.grade">
+                    <option value="10">O grade</option>
+                    <option value="9">A+</option>
+                    <option value="8">A</option>
+                    <option value="7">B+</option>
+                    <option value="6">B</option>
+                    <option value="5">C</option>
+                </select>
+                Credit Points:
+                <input type="number" id="credit2" ng-model="subject2.credit" min="0" placeholder="Enter credit" />
+            </div>
+
+            <button type="submit" ng-click="calculateGPA()">Calculate GPA</button>
+        </form>
+
+        <div ng-if="output !== undefined">
+            <h2>Your GPA: {{ output | number:2 }}</h2>
+        </div>
+    </div>
+
+</body>
+</html>

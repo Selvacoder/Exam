@@ -1,0 +1,49 @@
+import React, { useState } from 'react';
+
+function App() {
+  const [selectedParty, setSelectedParty] = useState("");
+
+  const parties = [
+    { name: "virat", image: "virat.png" },
+    { name: "rohit", image: "rohit.jpg" },
+    { name: "surya", image: "surya.jpg" },
+    { name: "hardik", image: "hardik.png" },
+    { name: "bumrah", image: "bumrah.jpg" },
+  ];
+
+  const handleSelection = (event) => {
+    setSelectedParty(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (selectedParty) {
+      alert('You voted for ' + selectedParty);
+    } else {
+      alert("Please select a party before submitting.");
+    }
+  };
+
+  return (
+    <div>
+      <h1>Voting App</h1>
+      <form>
+        {parties.map((party, index) => (
+          <div key={index}>
+            <input
+              type="radio"
+              id={party.name}
+              name="party"
+              value={party.name}
+              onChange={handleSelection}
+            />
+              <img src={party.image} alt={party.name}/>
+              {party.name}
+          </div>
+        ))}
+      </form>
+      <button type="button" onClick={handleSubmit}>Submit Vote</button>
+    </div>
+  );
+}
+
+export default App;

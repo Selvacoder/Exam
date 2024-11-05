@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Form</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+    <script src="jquery.js"></script>
+    <script>
+        function validate(){
+            $('.btn').click(function(){
+                var complete = true;
+                var firstname = $('#fn').val();
+                var phone = $('#phone').val();
+                var password = $('#password').val();
+                var confirmpassword = $('#confirmPassword').val();
+
+                $('#fnError, #phoneError, #passwordError, #confirmPasswordError').hide();
+
+                if(firstname.length === 0){
+                    $('#fnError').show().text('First name cannot be empty');
+                    complete = false;
+                }
+
+                if(phone.length !== 10){
+                    $('#phoneError').show().text("Please enter a valid phone number");
+                    complete = false;
+                }
+
+                if(password.length < 8){
+                    $('#passwordError').show().text('Password must contain 8 or more characters');
+                    complete = false;
+                }
+
+                if(password !== confirmpassword){
+                    $('#confirmPasswordError').show().text('Passwords do not match');
+                    complete = false;
+                }
+
+                if(complete){
+                    alert('Thank you for registering');
+                }
+            });
+        }
+
+        $(document).ready(validate);
+    </script>
+</head>
+<body>
+    <h1 style="text-align: center;">REGISTRATION FORM</h1>
+    <div class="container">
+        
+        First Name:<input type="text" id="fn"><br>
+            <span id="fnError" class="error"></span><br>
+
+        Phone Number:<input type="text" id="phone"><br>
+            <span id="phoneError" class="error"></span><br>
+            
+        
+        Email:<input type="text" id="email"><br>
+            <span id="emailError" class="error"></span><br>
+            
+        
+        Password:<input type="password" id="password"><br>
+            <span id="passwordError" class="error"></span><br>
+            
+
+        Confirm Password:<input type="password" id="confirmPassword"><br>
+            <span id="confirmPasswordError" class="error"></span><br>
+        <center>
+            <button class="btn">Register</button>
+        </center>
+    </div>
+</body>
+</html>

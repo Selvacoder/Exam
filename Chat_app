@@ -1,0 +1,89 @@
+Client1.js
+--------------
+const io = require('socket.io-client');
+const readline = require('readline');
+
+const socket = io('http://localhost:3000');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.on('line', (input) => {
+  socket.emit('chat message', input);
+});
+
+socket.on('chat message', (msg) => {
+  console.log(`Message: ${msg}`);
+});
+
+
+
+Server.js
+---------------
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+server.listen(3000, () => {
+  console.log('listening on *:3000');
+});
+
+
+index.html
+------------
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Chat App</title>
+ </head>
+
+<body>
+  <ul id="messages"></ul>
+  <form id="form" action="">
+    <input id="input" autocomplete="off" /><button>Send</button>
+  </form>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value) {
+        socket.emit('chat message', input.value);
+        input.value = '';
+      }
+    });
+
+    socket.on('chat message', function (msg) {
+      var item = document.createElement('li');
+      item.textContent = msg;
+      document.getElementById('messages').appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+</body>
+
+</html>

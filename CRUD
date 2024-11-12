@@ -1,129 +1,88 @@
 const { MongoClient } = require('mongodb');
 
 const uri = "mongodb://localhost:27017";
-
 const client = new MongoClient(uri);
-
 const dbName = "myDatabase";
-
 const collectionName = "myCollection";
 
 async function main() {
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB");
 
-try {
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
 
-await client.connect();
+        while (true) {
+            const option = parseInt(await prompt("Choose an operation: 1. Insert 2. Update 3. Delete 4. Find 5. Exit 6. Insert Many: "));
+            
+            switch(option) {
+                case 1:
+                    const nameInsert = await prompt("Enter the name: ");
+                    const ageInsert = parseInt(await prompt("Enter the age: "));
+                    const cityInsert = await prompt("Enter the city: ");
+                    const insertDoc = { name: nameInsert, age: ageInsert, city: cityInsert };
+                    const insertResult = await collection.insertOne(insertDoc);
+                    console.log("Document inserted with _id:", insertResult.insertedId);
+                    break;
 
-console.log("Connected to MongoDB");
+                case 2:
+                    const nameUpdate = await prompt("Enter the name of the person to update: ");
+                    const newAge = parseInt(await prompt("Enter the new age: "));
+                    const updateQuery = { name: nameUpdate };
+                    const updateDoc = { $set: { age: newAge } };
+                    const updateResult = await collection.updateOne(updateQuery, updateDoc);
+                    console.log(`${updateResult.matchedCount} document(s) matched, ${updateResult.modifiedCount} document(s) updated.`);
+                    break;
 
-const db = client.db(dbName);
+                case 3:
+                    const nameDelete = await prompt("Enter the name of the person to delete: ");
+                    const deleteQuery = { name: nameDelete };
+                    const deleteResult = await collection.deleteOne(deleteQuery);
+                    console.log(`${deleteResult.deletedCount} document(s) deleted.`);
+                    break;
 
-const collection = db.collection(collectionName);
+                case 4:
+                    const docs = await collection.find().toArray();
+                    console.log("Documents in collection:", docs);
+                    break;
 
-const option = parseInt(await prompt("Choose an operation: 1. Insert 2. Update 3. Delete 
+                case 5:
+                    console.log("Exiting...");
+                    return; // Exit the main function to stop the loop and close connection.
 
-4. Find 5. Exit: "));
+                case 6:
+                    const numDocs = parseInt(await prompt("Enter the number of documents to insert: "));
+                    const docsToInsert = [];
+                    for (let i = 0; i < numDocs; i++) {
+                        const name = await prompt(`Enter name for document ${i + 1}: `);
+                        const age = parseInt(await prompt(`Enter age for document ${i + 1}: `));
+                        const city = await prompt(`Enter city for document ${i + 1}: `);
+                        docsToInsert.push({ name, age, city });
+                    }
+                    const insertManyResult = await collection.insertMany(docsToInsert);
+                    console.log(`${insertManyResult.insertedCount} documents inserted.`);
+                    break;
 
-switch(option) {
-
-case 1:
-
-const nameInsert = await prompt("Enter the name: ");
-
-const ageInsert = parseInt(await prompt("Enter the age: "));
-
-const cityInsert = await prompt("Enter the city: ");
-
-const insertDoc = { name: nameInsert, age: ageInsert, city: cityInsert };
-
-const result = await collection.insertOne(insertDoc);
-
-console.log("Document inserted with _id:", result.insertedId);
-
-break;
-
-case 2:
-
-
-const nameUpdate = await prompt("Enter the name of the person to update: ");
-
-const newAge = parseInt(await prompt("Enter the new age: "));
-
-const updateQuery = { name: nameUpdate };
-
-const updateDoc = { $set: { age: newAge } };
-
-const updateResult = await collection.updateOne(updateQuery, updateDoc);
-
-console.log(`${updateResult.matchedCount} document(s) matched, 
-
-${updateResult.modifiedCount} document(s) updated.`);
-
-break;
-
-case 3:
-
-
-const nameDelete = await prompt("Enter the name of the person to delete: ");
-
-const deleteQuery = { name: nameDelete };
-
-const deleteResult = await collection.deleteOne(deleteQuery);
-
-console.log(`${deleteResult.deletedCount} document(s) deleted.`);
-
-break;
-
-case 4:
-
-
-const docs = await collection.find().toArray();
-
-console.log("Documents in collection:", docs);
-
-break;
-
-case 5:
-
-console.log("Exiting...");
-
-break;
-
-default:
-
-console.log("Invalid option!");
-
+                default:
+                    console.log("Invalid option!");
+            }
+        }
+    } catch (err) {
+        console.error(err);
+    } finally {
+        await client.close();
+    }
 }
-
-} catch (err) {
-
-console.error(err);
-
-} finally {
-
-await client.close();
-
-}
-
-}
-
 
 function prompt(question) {
-
-return new Promise((resolve) => {
-
-const stdin = process.stdin;
-
-const stdout = process.stdout;
-
-stdin.resume();
-
-stdout.write(question);
-
-stdin.once('data', data => resolve(data.toString().trim()));
-
-});
-
+    return new Promise((resolve) => {
+        const stdin = process.stdin;
+        const stdout = process.stdout;
+        stdin.resume();
+        stdout.write(question);
+        stdin.once('data', data => resolve(data.toString().trim()));
+    });
 }
 
 main();
